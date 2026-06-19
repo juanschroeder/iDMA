@@ -1,4 +1,4 @@
 Bender.yml
 include
-*.sv
+#*.sv
 *.hjson
