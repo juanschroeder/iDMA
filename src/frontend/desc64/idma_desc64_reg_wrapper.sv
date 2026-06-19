@@ -61,13 +61,14 @@ import idma_desc64_reg_pkg::idma_desc64_hw2reg_t; #(
     end
 
     always_comb begin
-        // only take into account the fifo if a write is going to it
+        input_addr_valid_o = reg2hw_o.desc_addr.qe || input_addr_valid_q;
+
+        // only backpressure the register bus if a write is going to the
+        // descriptor-address FIFO
         if (reg_req_i.addr == IDMA_DESC64_DESC_ADDR_OFFSET) begin
             reg_rsp_o.ready = response.ready && input_addr_ready_i;
-            input_addr_valid_o = reg2hw_o.desc_addr.qe || input_addr_valid_q;
         end else begin
             reg_rsp_o.ready = response.ready;
-            input_addr_valid_o = '0;
         end
     end
 
