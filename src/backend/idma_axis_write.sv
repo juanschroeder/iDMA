@@ -111,7 +111,7 @@ module idma_axis_write #(
     assign buffer_clean = &(~buffer_out_valid_i);
 
     // write happening: both the bus (w_ready) and the buffer (ready_to_write) is high
-    assign write_happening = ready_to_write & write_ready;
+    assign write_happening = ready_to_write & write_ready & w_dp_rsp_ready_i;
 
     // the main buffer is conditionally to the write mask popped
     assign buffer_out_ready_o = write_happening ? mask_out : '0;
@@ -157,9 +157,9 @@ module idma_axis_write #(
     //--------------------------------------
     // connect w_dp response payload
     assign w_dp_rsp_o = '0;
-    assign w_dp_rsp_valid_o = 1'b1;
+    assign w_dp_rsp_valid_o = ready_to_write & write_ready;
 
-    assign write_req_o.tvalid = ready_to_write;
+    assign write_req_o.tvalid = ready_to_write & w_dp_rsp_ready_i;
     assign write_ready = write_rsp_i.tready;
 
 endmodule
