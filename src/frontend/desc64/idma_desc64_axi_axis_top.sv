@@ -212,6 +212,9 @@ always_comb begin : proc_aw
     master_req_o.aw.addr = aw_addr;
     master_req_o.aw.size = (DataWidth == 32) ? 3'b010 : 3'b011;
     master_req_o.aw.len  = (DataWidth == 32) ? 'b1 : 'b0;
+    // Renode limitation: cannot be BURST_FIXED (=0 =default)
+    master_req_o.aw.burst = (DataWidth == 32) ? axi_pkg::BURST_FIXED :
+                                axi_pkg::BURST_INCR;
 end
 
 assign master_req_o.w_valid = w_counter_q > 0;
