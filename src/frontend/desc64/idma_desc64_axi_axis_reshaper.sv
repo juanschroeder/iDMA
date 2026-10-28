@@ -74,6 +74,7 @@ end
 assign descriptor_valid_o =
     ((src_protocol == idma_pkg::AXI) &&
      ((dst_protocol == idma_pkg::AXI) ||
-      (dst_protocol == idma_pkg::AXI_STREAM)));
+      (dst_protocol == idma_pkg::AXI_STREAM))) ||
+      (src_protocol == idma_pkg::AXI_STREAM && dst_protocol == idma_pkg::AXI);
 
 endmodule
